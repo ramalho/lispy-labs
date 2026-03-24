@@ -1,0 +1,66 @@
+Descreva mais prolixamente o que será abordado na sua atividade, a sua motivação para criá-la e informações que considere relevantes.
+
+"""
+Nem toda pessoa que trabalha programando já teve oportunidade de aprender como é implementada uma linguagem de programação. Quem já estudou compiladores pode ter ficado com a impressão de que é tudo muito complicado. Mas Peter Norvig mostra que é possível criar um pequeno Lisp em 132 linhas de código bem legível. Nesta oficina vamos recriar o lis.py de Norvig, usando recursos modernos de Python como match/case, anotações de tipo, e integração com o Jupyter Notebook fornecendo uma interface amigável para programação em lis.py.
+""
+
+> Esse conteúdo será utilizado apenas na sua avaliação (não será divulgado), portanto não poupe detalhes que considere que são diferenciais da sua atividade. Outro ponto importante: a avaliação das atividades da Python Brasil é anonimizada, portanto você não deve colocar links ou realizar citações que exibam seu nome e/ou imagem.. Por favor escreva entre 200 e 1000 caracteres.
+
+O que as pessoas que participarem podem esperar aprender na sua atividade?
+
+"""
+As participantes aprenderão na prática conceitos fundamentais sobre implementação de linguagens de programação:
+- a diferença entre expressões e instruções (statements);
+- porque as linguagens precisam de palavras reservadas, ou, porque o `if` não pode ser uma função;
+- funcionamento de um parser simples;
+- conceito de árvore sintática abstrata;
+- regras de avaliação para expressões e instruções;
+- porque e como implementar closures;
+"""
+
+> Qual expectativa as pessoas devem ter em relação ao conteúdo que você apresentará?
+
+Escolha até 3 palavras-chave para representar sua atividade
+
+"""
+linguagem interpretador lisp
+"""
+
+> Exemplo: Web, Testes, Data Science, IA, Pessoas, Carreira, DevOps
+
+Quais conhecimentos prévios são necessários para que seja possível acompanhar bem a sua atividade?
+
+"""
+A oficina não exige conhecimentos prévios além de saber programar em Python. Os exercícios serão feitos no Jupyter Notebook, então é útil (mas não necessário) ter alguma prática com esta ferramenta.
+"""
+
+> Procure especificar essa parte: dizer apenas “Python Intermediário” não ajuda muito. Informar o nível de experiência e o tipo de conceito (pessoas, tecnologia) ou ferramenta (banco de dados SQL, desenvolvimento web, estatística, etc…) necessário para conseguir acompanhar sua apresentação. Isso também nos ajudará a montar uma programação que tenha uma boa variedade de conteúdo para pessoas com diferentes interesses e níveis de conhecimento. Por favor escreva entre 200 e 600 caracteres.
+
+Tabela de conteúdo
+
+"""
+5	Visão Geral da Oficina
+10	Sintaxe de Scheme
+10	Imports e tipos
+20	O parser
+5	Exercício 0
+20	Ambiente básico para aritmética
+25	Uma calculadora
+5	Execução não-interativa
+5	Exercício 1
+5	Exercício 2
+5	Exercício 3
+25	Procedure: uma classe que representa uma closure
+25	Um ambiente mais completo
+20	Avaliador com lambda, if e quote
+10	Exemplos
+20	Exercício: açucar sintático para definição de função nomeada 
+20	Integração com Jupyter Notebook
+20	Integração com Jupyturtle
+20	O REPL
+25	Integração com a linha de comando
+10	Conclusão: o que vimos de mais importante
+"""
+
+> Gostaríamos que nos fornecesse um esboço dos tópicos que serão abordados em sua atividade, eles serão utilizados apenas na avaliação da atividade (não serão divulgados). Atente-se ao tempo proposto da atividade, incluindo o tempo de perguntas. Por exemplo, considerando uma palestra: * 3 mins apresentando palestrante; * 3 mins contextualizando problema motivador; * 10 mins embasamento teórico; * 3 mins apresentando a biblioteca A; * 9 mins apresentando B; * 3 mins explicando C; * 9 mins conclusões; * 5 mins para dúvidas; Além disso, lembre-se que a avaliação das atividades da Python Brasil é anonimizada, portanto você não deve colocar links ou realizar citações que exibam seu nome e/ou imagem. Por favor escreva entre 200 e 600 caracteres.
+

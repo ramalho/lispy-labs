@@ -1,7 +1,7 @@
 # Aprendendo com lis.py
 
 > **DICA:** Clique
-[AQUI](https://colab.research.google.com/github/ramalho/lispyse24/blob/lispy.ipynb)
+[AQUI](https://colab.research.google.com/github/ramalho/lispy-labs/blob/main/workshops/tosconf2026/lispy.ipynb)
 para executar o Jupyter Notebook na nuvem através da plataforma Google Colab.
 
 Este repositório contém variações do

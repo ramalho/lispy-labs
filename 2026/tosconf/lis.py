@@ -59,8 +59,8 @@ def parse_atom(token: str) -> Atom:
             return Symbol(token)
 
 
-
 ################ global environment
+
 
 class Environment(ChainMap[Symbol, Any]):
     "A ChainMap that allows changing an item in-place."
@@ -77,8 +77,9 @@ class Environment(ChainMap[Symbol, Any]):
 def standard_env() -> Environment:
     "An environment with some Scheme standard procedures."
     env = Environment()
-    env.update(vars(math))   # sin, cos, sqrt, pi, ...
-    env.update({
+    env.update(vars(math))  # sin, cos, sqrt, pi, ...
+    env.update(
+        {
             '+': op.add,
             '-': op.sub,
             '*': op.mul,
@@ -112,7 +113,8 @@ def standard_env() -> Environment:
             'procedure?': callable,
             'round': round,
             'symbol?': lambda x: isinstance(x, Symbol),
-    })
+        }
+    )
     return env
 
 
@@ -140,30 +142,34 @@ def lispstr(exp: object) -> str:
 
 KEYWORDS = ['quote', 'if', 'define', 'lambda']
 
+
 def evaluate(exp: Expression, env: Environment) -> Any:
     "Evaluate an expression in an environment."
     match exp:
-        case int(x) | float(x):                             # number literal
+        case int(x) | float(x):  # number literal
             return x
-        case Symbol(var):                                   # variable reference
+        case Symbol(var):  # variable reference
             return env[var]
-        case ['quote', exp]:                                # (quote exp)
+        case ['quote', exp]:  # (quote exp)
             return exp
-        case ['if', test, consequence, alternative]:        # (if test consequence alternative)
+        case ['if', test, consequence, alternative]:  # (if test consequence alternative)
             if evaluate(test, env):
                 return evaluate(consequence, env)
             else:
                 return evaluate(alternative, env)
-        case ['define', Symbol(var), value_exp]:            # (define var exp)
+        case ['define', Symbol(var), value_exp]:  # (define var exp)
             env[var] = evaluate(value_exp, env)
-        case ['define', [Symbol(name), *parms], *body       # (define (name parm...) body1 bodyN...)
-              ] if len(body) > 0:
+        case [
+            'define',
+            [Symbol(name), *parms],
+            *body,  # (define (name parm...) body1 bodyN...)
+        ] if len(body) > 0:
             env[name] = Procedure(parms, body, env)
         case ['lambda', [*parms], *body] if len(body) > 0:  # (lambda (parm...) body1 bodyN...)
             return Procedure(parms, body, env)
         case ['set!', Symbol(name), value_exp]:
             env.change(name, evaluate(value_exp, env))
-        case [op, *args] if op not in KEYWORDS:             # (proc arg...)
+        case [op, *args] if op not in KEYWORDS:  # (proc arg...)
             proc = evaluate(op, env)
             values = (evaluate(arg, env) for arg in args)
             return proc(*values)
@@ -174,9 +180,7 @@ def evaluate(exp: Expression, env: Environment) -> Any:
 class Procedure:
     "A user-defined Scheme procedure."
 
-    def __init__(
-        self, parms: list[Symbol], body: list[Expression], env: Environment
-    ):
+    def __init__(self, parms: list[Symbol], body: list[Expression], env: Environment):
         self.parms = parms
         self.body = body
         self.env = env
@@ -190,8 +194,8 @@ class Procedure:
         return result
 
 
-
 ################ non-interactive execution
+
 
 def run_lines(source: str) -> Iterator[Any]:
     global_env: Environment = standard_env()
@@ -217,6 +221,7 @@ if get_ipython() is None:
 else:
     from IPython.core.magic import register_cell_magic
 
+
 @register_cell_magic
 def lispy(line, cell):
     """Evaluate cell."""
@@ -227,12 +232,14 @@ def lispy(line, cell):
 
 import sys
 
+
 def main():
     code = sys.stdin.read()
     if code.strip():
         print(run(code))
     else:
         repl()
+
 
 if __name__ == '__main__':
     main()

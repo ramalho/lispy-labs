@@ -24,13 +24,16 @@ Expression: TypeAlias = Atom | list
 
 ################ Parsing: parse, tokenize, and read_from_tokens
 
+
 def parse(program: str) -> Expression:
     "Read a Scheme expression from a string."
     return read_from_tokens(tokenize(program))
 
+
 def tokenize(s: str) -> list[str]:
     "Convert a string into a list of tokens."
     return s.replace('(', ' ( ').replace(')', ' ) ').split()
+
 
 def read_from_tokens(tokens: list[str]) -> Expression:
     "Read an expression from a sequence of tokens."
@@ -48,6 +51,7 @@ def read_from_tokens(tokens: list[str]) -> Expression:
     else:
         return parse_atom(token)
 
+
 def parse_atom(token: str) -> Atom:
     "Numbers become numbers; every other token is a symbol."
     try:
@@ -61,6 +65,7 @@ def parse_atom(token: str) -> Atom:
 
 ################ Global Environment
 
+
 # tag::ENV_CLASS[]
 class Environment(ChainMap[Symbol, Any]):
     "A ChainMap that allows changing an item in-place."
@@ -72,13 +77,17 @@ class Environment(ChainMap[Symbol, Any]):
                 map[key] = value  # type: ignore[index]
                 return
         raise KeyError(key)
+
+
 # end::ENV_CLASS[]
+
 
 def standard_env() -> Environment:
     "An environment with some Scheme standard procedures."
     env = Environment()
-    env.update(vars(math))   # sin, cos, sqrt, pi, ...
-    env.update({
+    env.update(vars(math))  # sin, cos, sqrt, pi, ...
+    env.update(
+        {
             '+': op.add,
             '-': op.sub,
             '*': op.mul,
@@ -112,11 +121,13 @@ def standard_env() -> Environment:
             'procedure?': callable,
             'round': round,
             'symbol?': lambda x: isinstance(x, Symbol),
-    })
+        }
+    )
     return env
 
 
 ################ Interaction: A REPL
+
 
 # tag::REPL[]
 def repl(prompt: str = 'lis.py> ') -> NoReturn:
@@ -128,12 +139,15 @@ def repl(prompt: str = 'lis.py> ') -> NoReturn:
         if val is not None:
             print(lispstr(val))
 
+
 def lispstr(exp: object) -> str:
     "Convert a Python object back into a Lisp-readable string."
     if isinstance(exp, list):
         return '(' + ' '.join(map(lispstr, exp)) + ')'
     else:
         return str(exp)
+
+
 # end::REPL[]
 
 
@@ -141,6 +155,7 @@ def lispstr(exp: object) -> str:
 
 # tag::EVALUATE[]
 KEYWORDS = ['quote', 'if', 'lambda', 'define', 'set!']
+
 
 def evaluate(exp: Expression, env: Environment) -> Any:
     "Evaluate an expression in an environment."
@@ -170,17 +185,17 @@ def evaluate(exp: Expression, env: Environment) -> Any:
             return proc(*values)
         case _:
             raise SyntaxError(lispstr(exp))
+
+
 # end::EVALUATE[]
+
 
 # tag::PROCEDURE[]
 class Procedure:
     "A user-defined Scheme procedure."
 
     def __init__(  # <1>
-        self,
-        parms: list[Symbol],
-        body: list[Expression],
-        env: Environment
+        self, parms: list[Symbol], body: list[Expression], env: Environment
     ):
         self.parms = parms  # <2>
         self.body = body
@@ -192,10 +207,13 @@ class Procedure:
         for exp in self.body:  # <6>
             result = evaluate(exp, env)
         return result  # <7>
+
+
 # end::PROCEDURE[]
 
 
 ################ command-line interface
+
 
 def run(source: str) -> Any:
     global_env = Environment({}, standard_env())
@@ -205,6 +223,7 @@ def run(source: str) -> Any:
         result = evaluate(exp, global_env)
     return result
 
+
 def main(args: list[str]) -> None:
     if len(args) == 1:
         with open(args[0]) as fp:
@@ -212,6 +231,8 @@ def main(args: list[str]) -> None:
     else:
         repl()
 
+
 if __name__ == '__main__':
     import sys
+
     main(sys.argv[1:])

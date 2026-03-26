@@ -84,7 +84,7 @@ class Path(NamedTuple):
 
     def get_SVG(self):
         path = 'M ' + ' '.join(
-            [f'{round(point.x,1):g},{round(point.y,1):g}' for point in self.points]
+            [f'{round(point.x, 1):g},{round(point.y, 1):g}' for point in self.points]
         )
         return PATH_SVG.format(color=self.color, width=self.width, path=path)
 
@@ -146,9 +146,7 @@ class Turtle:
         self.active_pen = True
         self.__pen_color = PEN_COLOR
         self.__pen_width = PEN_WIDTH
-        self.paths: list[Path] = [
-            Path(points=[self.position], color=PEN_COLOR, width=PEN_WIDTH)
-        ]
+        self.paths: list[Path] = [Path(points=[self.position], color=PEN_COLOR, width=PEN_WIDTH)]
         # TODO: issue warning if `display` did not return a handle
         self.drawing.handle = display(HTML(self.get_SVG()), display_id=True)
 
@@ -261,9 +259,7 @@ class Turtle:
         if self.active_pen:
             self.paths[-1].append(Point(*new_pos))
         else:
-            self.paths.append(
-                Path(points=[new_pos], color=self.pen_color, width=self.pen_width)
-            )
+            self.paths.append(Path(points=[new_pos], color=self.pen_color, width=self.pen_width))
         self.position = new_pos
         if self.animate:
             self.draw()
@@ -279,7 +275,6 @@ class Turtle:
         self.move_to(*new_pos)
         if degrees:
             self.left(degrees)
-
 
     @command_alias('lp')
     def leap(self, units: float, degrees: float = 0):
@@ -302,9 +297,7 @@ class Turtle:
     def jump_to(self, x: float, y: float):
         """Teleport the turtle to coordinates (x, y) without drawing."""
         self.position = Point(x, y)
-        self.paths.append(
-            Path(points=[self.position], color=self.pen_color, width=self.pen_width)
-        )
+        self.paths.append(Path(points=[self.position], color=self.pen_color, width=self.pen_width))
         if self.animate:
             self.draw()
 
@@ -371,7 +364,6 @@ class Turtle:
         if not animate:
             self.draw()
         self.animate = saved_animate
-
 
 
 ################################################## procedural API

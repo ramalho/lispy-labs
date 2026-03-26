@@ -140,6 +140,8 @@ fact_src = """
 )
 (! 42)
 """
+
+
 def test_factorial():
     got = run(fact_src)
     assert got == 1405006117752879898543142606244511569936384000000000
@@ -155,6 +157,8 @@ gcd_src = """
         (gcd n (mod m n))))
 (display (gcd 18 45))
 """
+
+
 def test_gcd(capsys):
     run(gcd_src)
     captured = capsys.readouterr()
@@ -179,6 +183,8 @@ quicksort_src = """
 )
 (quicksort (list 2 1 6 3 4 0 8 9 7 5))
 """
+
+
 def test_quicksort():
     got = run(quicksort_src)
     assert got == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -202,6 +208,8 @@ newton_src = """
     (/ (+ x y) 2))
 (sqrt 123454321)
 """
+
+
 def test_newton():
     got = run(newton_src)
     assert math.isclose(got, 11111)
@@ -214,9 +222,12 @@ closure_src = """
 (define inc (make-adder 1))
 (inc 99)
 """
+
+
 def test_closure():
     got = run(closure_src)
     assert got == 100
+
 
 closure_with_change_src = """
 (define (make-counter)
@@ -230,11 +241,12 @@ closure_with_change_src = """
 (display (counter))
 (display (counter))
 """
+
+
 def test_closure_with_change(capsys):
     run(closure_with_change_src)
     captured = capsys.readouterr()
     assert captured.out == '1\n2\n3\n'
-
 
 
 # tag::RUN_AVERAGER[]
@@ -253,7 +265,11 @@ closure_averager_src = """
 (avg 11)
 (avg 15)
 """
+
+
 def test_closure_averager():
     got = run(closure_averager_src)
     assert got == 12.0
+
+
 # end::RUN_AVERAGER[]

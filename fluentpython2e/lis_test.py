@@ -13,8 +13,14 @@ from lis import parse, evaluate, Expression, Environment, standard_env
         ('7', 7),
         ('x', 'x'),
         ('(sum 1 2 3)', ['sum', 1, 2, 3]),
-        ('(+ (* 2 100) (* 1 10))', ['+', ['*', 2, 100], ['*', 1, 10]]),
-        ('99 100', 99),  # parse stops at the first complete expression
+        (
+            '(+ (* 2 100) (* 1 10))',
+            ['+', ['*', 2, 100], ['*', 1, 10]],
+        ),
+        (
+            '99 100',
+            99,
+        ),  # parse stops at the first complete expression
         ('(a)(b)', ['a']),
     ],
 )
@@ -33,7 +39,10 @@ global_env_for_first_test = standard_env()
 @mark.parametrize(
     'source, expected',
     [
-        ('(quote (testing 1 (2.0) -3.14e159))', ['testing', 1, [2.0], -3.14e159]),
+        (
+            '(quote (testing 1 (2.0) -3.14e159))',
+            ['testing', 1, [2.0], -3.14e159],
+        ),
         ('(+ 2 2)', 4),
         ('(+ (* 2 100) (* 1 10))', 210),
         ('(if (> 6 5) (+ 1 1) (+ 2 2))', 2),
@@ -44,14 +53,23 @@ global_env_for_first_test = standard_env()
         ('((lambda (x) (+ x x)) 5)', 10),
         ('(define twice (lambda (x) (* 2 x)))', None),
         ('(twice 5)', 10),
-        ('(define compose (lambda (f g) (lambda (x) (f (g x)))))', None),
+        (
+            '(define compose (lambda (f g) (lambda (x) (f (g x)))))',
+            None,
+        ),
         ('((compose list twice) 5)', [10]),
         ('(define repeat (lambda (f) (compose f f)))', None),
         ('((repeat twice) 5)', 20),
         ('((repeat (repeat twice)) 5)', 80),
-        ('(define fact (lambda (n) (if (<= n 1) 1 (* n (fact (- n 1))))))', None),
+        (
+            '(define fact (lambda (n) (if (<= n 1) 1 (* n (fact (- n 1))))))',
+            None,
+        ),
         ('(fact 3)', 6),
-        ('(fact 50)', 30414093201713378043612608166064768844377641568960512000000000000),
+        (
+            '(fact 50)',
+            30414093201713378043612608166064768844377641568960512000000000000,
+        ),
         ('(define abs (lambda (n) ((if (> n 0) + -) 0 n)))', None),
         ('(list (abs -3) (abs 0) (abs 3))', [3, 0, 3]),
         (
@@ -63,7 +81,10 @@ global_env_for_first_test = standard_env()
             None,
         ),
         ('(define zip (combine cons))', None),
-        ('(zip (list 1 2 3 4) (list 5 6 7 8))', [[1, 5], [2, 6], [3, 7], [4, 8]]),
+        (
+            '(zip (list 1 2 3 4) (list 5 6 7 8))',
+            [[1, 5], [2, 6], [3, 7], [4, 8]],
+        ),
         (
             """(define riff-shuffle (lambda (deck)
             (begin
@@ -73,15 +94,23 @@ global_env_for_first_test = standard_env()
                 ((combine append) (take (mid deck) deck) (drop (mid deck) deck)))))""",
             None,
         ),
-        ('(riff-shuffle (list 1 2 3 4 5 6 7 8))', [1, 5, 2, 6, 3, 7, 4, 8]),
-        ('((repeat riff-shuffle) (list 1 2 3 4 5 6 7 8))', [1, 3, 5, 7, 2, 4, 6, 8]),
+        (
+            '(riff-shuffle (list 1 2 3 4 5 6 7 8))',
+            [1, 5, 2, 6, 3, 7, 4, 8],
+        ),
+        (
+            '((repeat riff-shuffle) (list 1 2 3 4 5 6 7 8))',
+            [1, 3, 5, 7, 2, 4, 6, 8],
+        ),
         (
             '(riff-shuffle (riff-shuffle (riff-shuffle (list 1 2 3 4 5 6 7 8))))',
             [1, 2, 3, 4, 5, 6, 7, 8],
         ),
     ],
 )
-def test_evaluate(source: str, expected: Optional[Expression]) -> None:
+def test_evaluate(
+    source: str, expected: Optional[Expression]
+) -> None:
     got = evaluate(parse(source), global_env_for_first_test)
     assert got == expected
 

@@ -84,9 +84,14 @@ class Path(NamedTuple):
 
     def get_SVG(self):
         path = 'M ' + ' '.join(
-            [f'{round(point.x, 1):g},{round(point.y, 1):g}' for point in self.points]
+            [
+                f'{round(point.x, 1):g},{round(point.y, 1):g}'
+                for point in self.points
+            ]
         )
-        return PATH_SVG.format(color=self.color, width=self.width, path=path)
+        return PATH_SVG.format(
+            color=self.color, width=self.width, path=path
+        )
 
 
 # mapping of method names to global aliases
@@ -139,16 +144,26 @@ class Turtle:
         self.animate = animate
         self.delay = delay
         self.drawing = drawing if drawing else Drawing()
-        self.position = Point(self.drawing.width // 2, self.drawing.height // 2)
+        self.position = Point(
+            self.drawing.width // 2, self.drawing.height // 2
+        )
         self.heading = TURTLE_HEADING
         self.color = TURTLE_COLOR
         self.visible = True
         self.active_pen = True
         self.__pen_color = PEN_COLOR
         self.__pen_width = PEN_WIDTH
-        self.paths: list[Path] = [Path(points=[self.position], color=PEN_COLOR, width=PEN_WIDTH)]
+        self.paths: list[Path] = [
+            Path(
+                points=[self.position],
+                color=PEN_COLOR,
+                width=PEN_WIDTH,
+            )
+        ]
         # TODO: issue warning if `display` did not return a handle
-        self.drawing.handle = display(HTML(self.get_SVG()), display_id=True)
+        self.drawing.handle = display(
+            HTML(self.get_SVG()), display_id=True
+        )
 
     @property
     def x(self) -> float:
@@ -175,7 +190,9 @@ class Turtle:
         if color == self.__pen_color:
             return
         self.__pen_color = color
-        new_path = Path(points=[self.position], color=color, width=self.pen_width)
+        new_path = Path(
+            points=[self.position], color=color, width=self.pen_width
+        )
         # create new path if there is no current path or if the current path has points
         if not self.paths or len(self.paths[-1]) > 1:
             self.paths.append(new_path)
@@ -191,7 +208,9 @@ class Turtle:
         if width == self.__pen_width:
             return
         self.__pen_width = width
-        new_path = Path(points=[self.position], color=self.pen_color, width=width)
+        new_path = Path(
+            points=[self.position], color=self.pen_color, width=width
+        )
         # create new path if there is no current path or if the current path has points
         if not self.paths or len(self.paths[-1]) > 1:
             self.paths.append(new_path)
@@ -211,7 +230,10 @@ class Turtle:
             self.__delay = 0
             return
         if not self.animate:
-            print('Warning: delay is ignored when animate=False', file=sys.stderr)
+            print(
+                'Warning: delay is ignored when animate=False',
+                file=sys.stderr,
+            )
         self.__delay = s
 
     def get_SVG(self):
@@ -259,7 +281,13 @@ class Turtle:
         if self.active_pen:
             self.paths[-1].append(Point(*new_pos))
         else:
-            self.paths.append(Path(points=[new_pos], color=self.pen_color, width=self.pen_width))
+            self.paths.append(
+                Path(
+                    points=[new_pos],
+                    color=self.pen_color,
+                    width=self.pen_width,
+                )
+            )
         self.position = new_pos
         if self.animate:
             self.draw()
@@ -297,7 +325,13 @@ class Turtle:
     def jump_to(self, x: float, y: float):
         """Teleport the turtle to coordinates (x, y) without drawing."""
         self.position = Point(x, y)
-        self.paths.append(Path(points=[self.position], color=self.pen_color, width=self.pen_width))
+        self.paths.append(
+            Path(
+                points=[self.position],
+                color=self.pen_color,
+                width=self.pen_width,
+            )
+        )
         if self.animate:
             self.draw()
 
@@ -399,12 +433,18 @@ _main_turtle = None
 
 
 def make_turtle(
-    *, animate=True, delay=None, width=DEFAULT_DRAW_WIDTH, height=DEFAULT_DRAW_HEIGHT
+    *,
+    animate=True,
+    delay=None,
+    width=DEFAULT_DRAW_WIDTH,
+    height=DEFAULT_DRAW_HEIGHT,
 ) -> Turtle:
     """Makes new Turtle and sets _main_turtle."""
     global _main_turtle
     drawing = Drawing(width=width, height=height)
-    _main_turtle = Turtle(animate=animate, delay=delay, drawing=drawing)
+    _main_turtle = Turtle(
+        animate=animate, delay=delay, drawing=drawing
+    )
     return _main_turtle
 
 

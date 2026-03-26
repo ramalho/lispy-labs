@@ -2,4 +2,4 @@
 
 Changes:
 
-* `ruff` formatted with option `quote-style = "single"`
+* `ruff` formatted with options `line-length = 70` and  `quote-style = "single"`

@@ -1,24 +1,26 @@
 #!/usr/bin/env python3
 
 ################ Lispy: Scheme Interpreter in Python 3.10
+
 ## (c) Peter Norvig, 2010-18; See http://norvig.com/lispy.html
 ## Minor edits for Fluent Python, Second Edition (O'Reilly, 2021)
 ## by Luciano Ramalho, adding type hints and pattern matching.
 
-################ imports and types
+################ Imports and Types
 
 import math
 import operator as op
 from collections import ChainMap
 from collections.abc import Iterator
 from itertools import chain
-from typing import Any, TypeAlias
+from typing import Any, TypeAlias, NoReturn
 
 Symbol: TypeAlias = str
 Atom: TypeAlias = float | int | Symbol
 Expression: TypeAlias = Atom | list
 
-################ parse, tokenize, and read_from_tokens
+
+################ Parsing: parse, tokenize, and read_from_tokens
 
 
 def parse(program: str) -> Expression:
@@ -59,7 +61,7 @@ def parse_atom(token: str) -> Atom:
             return Symbol(token)
 
 
-################ global environment
+################ Global Environment
 
 
 class Environment(ChainMap[Symbol, Any]):
@@ -118,14 +120,16 @@ def standard_env() -> Environment:
     return env
 
 
-################ interaction: a REPL
+################ Interaction: A REPL
 
 
-def repl(prompt: str = 'lis.py> ') -> None:
-    "A prompt-read-evaluate-print loop."
-    global_env: Environment = standard_env()
+# tag::REPL[]
+def repl(prompt: str = 'lis.py> ') -> NoReturn:
+    "A prompt-read-eval-print loop."
+    global_env = Environment({}, standard_env())
     while True:
-        val = evaluate(parse(input(prompt)), global_env)
+        ast = parse(input(prompt))
+        val = evaluate(ast, global_env)
         if val is not None:
             print(lispstr(val))
 
@@ -152,7 +156,12 @@ def evaluate(exp: Expression, env: Environment) -> Any:
             return env[var]
         case ['quote', exp]:  # (quote exp)
             return exp
-        case ['if', test, consequence, alternative]:  # (if test consequence alternative)
+        case [
+            'if',
+            test,
+            consequence,
+            alternative,
+        ]:  # (if test consequence alternative)
             if evaluate(test, env):
                 return evaluate(consequence, env)
             else:
@@ -165,7 +174,9 @@ def evaluate(exp: Expression, env: Environment) -> Any:
             *body,  # (define (name parm...) body1 bodyN...)
         ] if len(body) > 0:
             env[name] = Procedure(parms, body, env)
-        case ['lambda', [*parms], *body] if len(body) > 0:  # (lambda (parm...) body1 bodyN...)
+        case ['lambda', [*parms], *body] if (
+            len(body) > 0
+        ):  # (lambda (parm...) body1 bodyN...)
             return Procedure(parms, body, env)
         case ['set!', Symbol(name), value_exp]:
             env.change(name, evaluate(value_exp, env))
@@ -180,7 +191,12 @@ def evaluate(exp: Expression, env: Environment) -> Any:
 class Procedure:
     "A user-defined Scheme procedure."
 
-    def __init__(self, parms: list[Symbol], body: list[Expression], env: Environment):
+    def __init__(
+        self,
+        parms: list[Symbol],
+        body: list[Expression],
+        env: Environment,
+    ):
         self.parms = parms
         self.body = body
         self.env = env

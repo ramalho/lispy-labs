@@ -1,4 +1,5 @@
-line-length = 100
+line-length = 70
 
 [format]
 quote-style = "single"
+exclude = ["*.ipynb"]

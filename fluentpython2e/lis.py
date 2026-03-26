@@ -1,11 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ################ Lispy: Scheme Interpreter in Python 3.10
 
 ## (c) Peter Norvig, 2010-18; See http://norvig.com/lispy.html
 ## Minor edits for Fluent Python, Second Edition (O'Reilly, 2021)
 ## by Luciano Ramalho, adding type hints and pattern matching.
-
 
 ################ Imports and Types
 
@@ -195,7 +194,10 @@ class Procedure:
     "A user-defined Scheme procedure."
 
     def __init__(  # <1>
-        self, parms: list[Symbol], body: list[Expression], env: Environment
+        self,
+        parms: list[Symbol],
+        body: list[Expression],
+        env: Environment,
     ):
         self.parms = parms  # <2>
         self.body = body

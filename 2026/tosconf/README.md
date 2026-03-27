@@ -3,7 +3,7 @@
 > **DICA:** Clique no link abaixo
 para executar o Jupyter Notebook na nuvem através da plataforma Google Colab:
 
-https://colab.research.google.com/github/ramalho/lispy-labs/blob/main/2026/tosconf2026/lispy.ipynb
+https://colab.research.google.com/github/ramalho/lispy-labs/blob/main/2026/tosconf/lispy.ipynb
 
 Este repositório contém variações do
 [interpretador lis.py](https://github.com/norvig/pytudes/blob/c33cd6835a506a57d9fe73e3a8317d49babb13e8/py/lis.py)

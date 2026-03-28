@@ -1,4 +1,4 @@
-# Aprendendo com _lis.py_
+# github.com/ramalho/lispy-labs/2026/tosconf
 
 Este repositório contém material para oficinas apresentando o
 [interpretador _lis.py_](https://github.com/norvig/pytudes/blob/c33cd6835a506a57d9fe73e3a8317d49babb13e8/py/lis.py)
